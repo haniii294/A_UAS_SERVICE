@@ -3,6 +3,9 @@ const router = express.Router();
 const Book = require('../models/book');
 const auth = require('../middleware/auth'); // Middleware JWT
 
+const { bookLimiter } = require('../middleware/ratelimiters');
+
+router.use(bookLimiter);
 // CREATE (Hanya user login yang bisa menambahkan buku)
 router.post('/', auth, async (req, res) => {
   try {
