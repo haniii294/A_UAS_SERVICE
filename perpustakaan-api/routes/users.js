@@ -3,6 +3,9 @@ const router = express.Router();
 const User = require('../models/user');
 const authController = require('../controllers/authController');
 
+const { userProfileLimiter } = require('../middleware/ratelimiters');
+
+router.use(userProfileLimiter);
 // REGISTER - SEKARANG MEMAKAI CONTROLLER YANG BENAR
 router.post('/register', authController.register);
 
