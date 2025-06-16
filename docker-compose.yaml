@@ -1,0 +1,53 @@
+version: "3"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmqctl status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  perpustakaan-api:
+    build: ./perpustakaan-api
+    restart: always
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:5000/api/books || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  iot-publisher:
+    build:
+      context: ./perpustakaan-iot
+      dockerfile: Dockerfile
+    restart: always
+    command: ["node", "src/iot-publisher.js"]
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      perpustakaan-api:
+        condition: service_healthy
+
+  iot-consumer:
+    build:
+      context: ./perpustakaan-iot
+      dockerfile: Dockerfile
+    restart: always
+    command: ["node", "src/iot-consumer.js"]
+    environment:
+      MONGO_URI: "mongodb+srv://2210511021:fqAtlOFaaqhgMXPN@cluster0.ujclqny.mongodb.net/upnvj-library?retryWrites=true&w=majority"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy

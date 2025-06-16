@@ -7,15 +7,34 @@ const { bookLimiter } = require('../middleware/ratelimiters');
 
 router.use(bookLimiter);
 // CREATE (Hanya user login yang bisa menambahkan buku)
-router.post('/', auth, async (req, res) => {
+router.post("/", auth, async (req, res) => {
   try {
     const book = new Book(req.body);
     await book.save();
+
+    const conn = await amqplib.connect("amqp://rabbitmq");
+    const channel = await conn.createChannel();
+
+    const queue = "perpustakaan.sensors";
+    await channel.assertQueue(queue, { durable: true });
+
+    const message = {
+      event: `Buku ditambah: ${book.title}`,
+      bookId: book._id,
+      time: new Date()
+    };
+    channel.sendToQueue(queue, Buffer.from(JSON.stringify(message)));
+    console.log("Event diterbitkan :", message);
+
+    await channel.close();
+    await conn.close();
+
     res.status(201).json(book);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ error: "Gagal menambah buku!", details: err });
   }
 });
+
 
 // READ all (Public)
 router.get('/', async (req, res) => {

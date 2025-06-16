@@ -21,6 +21,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const movementRoutes = require("./routes/movements");
+app.use('/api/movements', movementRoutes);
+
 // Koneksi MongoDB (sudah benar, tidak ada perubahan)
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
@@ -53,7 +56,7 @@ require('./config/passport');
 const globalLimiter = rateLimit({
   windowMs: 10 * 1000,
   max: 5,
-  message: 'Terlalu banyak permintaan dari IP ini, silakan coba lagi setelah 15 menit.',
+  message: 'Terlalu banyak permintaan dari IP ini, silakan coba lagi setelah 10 detik.',
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -63,7 +66,7 @@ app.use(globalLimiter);
 const authLimiter = rateLimit({
   windowMs: 10 * 1000,
   max: 3,
-  message: 'Terlalu banyak percobaan login/register gagal dari IP ini, silakan coba lagi setelah 5 menit.',
+  message: 'Terlalu banyak percobaan login/register gagal dari IP ini, silakan coba lagi setelah 10 detik.',
   standardHeaders: true,
   legacyHeaders: false,
 });

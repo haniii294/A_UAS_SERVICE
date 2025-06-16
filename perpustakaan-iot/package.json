@@ -1,0 +1,21 @@
+{
+  "name": "perpustakaan-iot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/iot-publisher.js",
+  "scripts": {
+    "publisher": "node src/iot-publisher.js",
+    "consumer": "node src/iot-consumer.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "mongoose": "^7.6.0",
+    "node-fetch": "^2.6.7",
+    "passport-google-oauth20": "^2.0.0"
+  },
+  "devDependencies": {}
+}
