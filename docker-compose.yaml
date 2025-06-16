@@ -28,6 +28,16 @@ services:
       retries: 5
       start_period: 20s
 
+  nginx:
+    image: nginx:latest
+    container_name: nginx-gateway
+    ports:
+      - "80:80"
+    volumes:
+      - ./perpustakaan-api/gateway/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - perpustakaan-api
+
   iot-publisher:
     build:
       context: ./perpustakaan-iot
