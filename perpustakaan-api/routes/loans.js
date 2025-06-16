@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Loan = require('../models/loan');
 
+const { loanLimiter } = require('../middleware/ratelimiters');
+
+router.use(loanLimiter);
 // CREATE loan
 router.post('/', async (req, res) => {
   const loan = new Loan({

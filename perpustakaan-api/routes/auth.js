@@ -5,14 +5,18 @@ const router = express.Router();
 
 // Middleware verifikasi token JWT kamu (pastikan path-nya benar)
 const verifyToken = require('../middleware/auth.js');
+const { authLimiter } = require('../middleware/ratelimiters');
+
 
 router.get(
   '/google',
+  authLimiter,
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
 router.get(
   '/google/callback',
+  authLimiter,
   passport.authenticate('google', {
     failureRedirect: '/api/auth/login-failed',
     session: false,
@@ -48,7 +52,7 @@ router.get('/login-failed', (req, res) => {
     });
 });
 
-router.get('/me', verifyToken, (req, res) => {
+router.get('/me', authLimiter, verifyToken, (req, res) => {
     res.json({
         success: true,
         user: req.user,
