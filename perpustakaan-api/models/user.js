@@ -7,7 +7,12 @@ const userSchema = new mongoose.Schema({
     sparse: true
   },
   name: { type: String, required: true },
-  nim: { type: String, required: true },
+  nim: {
+    type: String,
+    required: function () {
+      return !this.googleId; 
+    }
+  },
   email: {
     type: String,
     required: true,
