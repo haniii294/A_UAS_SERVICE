@@ -16,7 +16,7 @@ const bookLimiter = rateLimit({
     'Terlalu banyak permintaan untuk endpoint buku ini, coba lagi setelah 1 menit',
   headers: true,
   statusCode: 429,
-});
+}); 
 
 const loanLimiter = rateLimit({
   windowMs: 10 * 1000, 

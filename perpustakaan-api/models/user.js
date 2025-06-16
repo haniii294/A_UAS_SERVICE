@@ -1,5 +1,3 @@
-// models/user.js
-
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -8,12 +6,13 @@ const userSchema = new mongoose.Schema({
     unique: true,
     sparse: true
   },
-  name: String,
-  nim: String,
+  name: { type: String, required: true },
+  nim: { type: String, required: true },
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email address']
   },
   username: {
     type: String,
@@ -22,12 +21,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    // --- INI BAGIAN YANG DIUBAH ---
-    // Password hanya wajib jika tidak ada googleId
     required: function() {
-      // 'this' merujuk pada dokumen user yang sedang divalidasi
-      // Jika this.googleId ada isinya (truthy), maka fungsi ini return false (tidak wajib)
-      // Jika this.googleId kosong (falsy), maka fungsi ini return true (wajib)
       return !this.googleId;
     }
   }

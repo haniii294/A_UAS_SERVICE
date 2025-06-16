@@ -3,7 +3,6 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-// Middleware verifikasi token JWT kamu (pastikan path-nya benar)
 const verifyToken = require('../middleware/auth.js');
 const { authLimiter } = require('../middleware/ratelimiters');
 
@@ -34,7 +33,7 @@ router.get(
       expiresIn: '1d',
     });
 
-    // Kirim token sebagai response ke client/frontend
+    // Kirim token sebagai response ke client
     res.json({
       success: true,
       message: 'Authentication successful!',
