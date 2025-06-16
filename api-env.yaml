@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: api-env
+type: Opaque
+stringData:
+  PORT: "5000"
+  MONGO_URI: "mongodb+srv://2210511021:fqAtlOFaaqhgMXPN@cluster0.ujclqny.mongodb.net/upnvj-library?retryWrites=true&w=majority"
+  JWT_SECRET: "123"
+  GOOGLE_CLIENT_ID: "1011412511583-h88jj8uj2lpurpgl0tkh1m7he9pdk0og.apps.googleusercontent.com"
+  GOOGLE_CLIENT_SECRET: "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"
+  SESSION_SECRET: "123"

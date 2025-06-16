@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iot-publisher
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iot-publisher
+  template:
+    metadata:
+      labels:
+        app: iot-publisher
+    spec:
+      containers:
+        - name: iot-publisher
+          image: perpustakaan-iot:local
+          imagePullPolicy: Never
+          command: ["node", "src/iot-publisher.js"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iot-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iot-consumer
+  template:
+    metadata:
+      labels:
+        app: iot-consumer
+    spec:
+      containers:
+        - name: iot-consumer
+          image: perpustakaan-iot:local
+          imagePullPolicy: Never
+          command: ["node", "src/iot-consumer.js"]
+          env:
+            - name: MONGO_URI
+              value: "mongodb+srv://2210511021:fqAtlOFaaqhgMXPN@cluster0.ujclqny.mongodb.net/upnvj-library?retryWrites=true&w=majority"
