@@ -39,4 +39,4 @@ spec:
           command: ["node", "src/iot-consumer.js"]
           env:
             - name: MONGO_URI
-              value: "mongodb+srv://2210511021:fqAtlOFaaqhgMXPN@cluster0.ujclqny.mongodb.net/upnvj-library?retryWrites=true&w=majority"
+              value: "mongodb://2210511021:fqAtlOFaaqhgMXPN@cluster0.ujclqny.mongodb.net/upnvj-library?retryWrites=true&w=majority"
